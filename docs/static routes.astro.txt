@@ -1,0 +1,25 @@
+---
+To make this a static site
+You would have to put this under the pages | articles folder and name it [...slug].astro
+// This is what you would do if you had a static site
+import MainLayout from "../../layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const allBlogArticles: CollectionEntry<"blog">[] =
+    await getCollection("blog");
+  return allBlogArticles.map((entry) => ({
+    params: {
+      slug: entry.slug,
+    },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<MainLayout>
+  <h1>{entry.data.title}</h1>
+</MainLayout>
